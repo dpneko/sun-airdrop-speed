@@ -34,7 +34,7 @@ def main():
 
 
 def generate_speed_from_sql():
-    engine = create_engine("mysql+pymysql://tron:123456@localhost:3306/old_farm_sun")
+    engine = create_engine("mysql+pymysql://tron:123456@localhost:3306/farm_sun_report_v2")
     token_status = pd.read_sql_query("select symbol,address,farm_speed,start_time,end_time,farm_token_type from token_status where farm_speed != 0", engine)
     token_status['start_time'] = pd.to_datetime(token_status['start_time'], unit='ms', utc=True).dt.tz_convert('Asia/Shanghai')
     token_status['end_time'] = pd.to_datetime(token_status['end_time'], unit='ms', utc=True).dt.tz_convert('Asia/Shanghai')

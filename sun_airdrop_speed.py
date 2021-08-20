@@ -81,6 +81,7 @@ def week_reward(week_speed):
     reward_for_farm_tokens = {}
     start = datetime.strptime(week_speed.index.get_level_values('period')[0].split('-')[1], r"%Y%m%d")
     end = datetime.strptime(week_speed.index.get_level_values('period')[-1].split('-')[1], r"%Y%m%d") + timedelta(weeks=23)
+    print(f"start:{start}, end:{end}, now:{end-timedelta(weeks=23)}")
     date_range = pd.date_range(start, end, freq='7D')
     template = pd.DataFrame(index=week_speed.index, columns=date_range)
     for col, series in week_speed.items():
@@ -91,6 +92,7 @@ def week_reward(week_speed):
             last_week = first_week + timedelta(weeks=23)
             df_reward.loc[index, first_week:last_week] = reward_per_week
         df_reward = df_reward.append(df_reward.sum(axis=0).rename("SUM"))
+        print(f"{col} {df_reward.loc['SUM', end-timedelta(weeks=23)]}")
         df_reward = df_reward.rename(columns=lambda x: x.strftime(r"%Y%m%d"))
         reward_for_farm_tokens[col] = df_reward
     with pd.ExcelWriter('theoretical_airdrop.xlsx') as writer:
